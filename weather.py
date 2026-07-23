@@ -1,12 +1,12 @@
 import requests
 
-def get_weather():
+def get_weather(latitude, longitude):
 
     url = "https://api.open-meteo.com/v1/forecast"
 
     parameters = {
-        "latitude": 40.7128,
-        "longitude": -74.0060,
+        "latitude": latitude,
+        "longitude": longitude,
         "current_weather": True
     }
 
@@ -33,7 +33,7 @@ def display_weather(data):
     print(f"Current Temperature: {round(temperature_fahrenheit)}°F")
     print(f"Current Wind Speed: {round(wind_speed_mph, 1)} mph")
 
-weather_data = get_weather()
+weather_data = get_weather(latitude=40.7128, longitude=-74.0060)
 
 if weather_data:
     display_weather(weather_data)
