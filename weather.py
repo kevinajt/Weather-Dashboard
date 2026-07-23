@@ -1,5 +1,31 @@
 import requests
 
+def get_coordinates(city):
+
+    url = "https://geocoding-api.open-meteo.com/v1/search"
+
+    parameters = {
+        "name": city
+    }
+
+    try:
+        response = requests.get(url, params=parameters)
+        response.raise_for_status()
+
+    except:
+        print("Error: Unable to retrieve coordinates.")
+        return None
+
+    data = response.json()
+
+    if "results" not in data or not data["results"]:
+        return None
+
+    return {
+        "latitude": data["results"][0]["latitude"],
+        "longitude": data["results"][0]["longitude"]
+    }
+
 def get_weather(latitude, longitude):
 
     url = "https://api.open-meteo.com/v1/forecast"
@@ -33,7 +59,22 @@ def display_weather(data):
     print(f"Current Temperature: {round(temperature_fahrenheit)}°F")
     print(f"Current Wind Speed: {round(wind_speed_mph, 1)} mph")
 
-weather_data = get_weather(latitude=40.7128, longitude=-74.0060)
+def main():
+    print("Enter a city name to get the current weather:")
 
-if weather_data:
-    display_weather(weather_data)
+    city = input()
+
+    coordinates = get_coordinates(city)
+
+    if coordinates is None:
+        print("Error: Unable to retrieve coordinates for the specified city.")
+        return
+
+    weather_data = get_weather(
+        latitude=coordinates["latitude"], 
+        longitude=coordinates["longitude"])
+
+    if weather_data:
+        display_weather(weather_data)
+
+main()
