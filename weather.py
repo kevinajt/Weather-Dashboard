@@ -10,7 +10,13 @@ def get_weather():
         "current_weather": True
     }
 
-    response = requests.get(url, params=parameters)
+    try:
+        response = requests.get(url, params=parameters)
+        response.raise_for_status()
+
+    except:
+        print("Error: Unable to retrieve weather data.")
+        return None
 
     data = response.json()
 
@@ -28,4 +34,6 @@ def display_weather(data):
     print(f"Current Wind Speed: {round(wind_speed_mph, 1)} mph")
 
 weather_data = get_weather()
-display_weather(weather_data)
+
+if weather_data:
+    display_weather(weather_data)
