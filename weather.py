@@ -1,23 +1,31 @@
 import requests
 
-url = "https://api.open-meteo.com/v1/forecast"
+def get_weather():
 
-parameters = {
-    "latitude": 40.7128,
-    "longitude": -74.0060,
-    "current_weather": True
-}
+    url = "https://api.open-meteo.com/v1/forecast"
 
-response = requests.get(url, params=parameters)
+    parameters = {
+        "latitude": 40.7128,
+        "longitude": -74.0060,
+        "current_weather": True
+    }
 
-data = response.json()
+    response = requests.get(url, params=parameters)
 
-temperature_celsius = data["current_weather"]["temperature"]
-temperature_fahrenheit = temperature_celsius * 9/5 + 32
+    data = response.json()
 
-wind_speed_kmh = data["current_weather"]["windspeed"]
-wind_speed_mph = wind_speed_kmh * 0.6213712
+    return data
 
-print(f"Current Temperature: {round(temperature_fahrenheit)}°F")
-print(f"Current Wind Speed: {round(wind_speed_mph, 1)} mph")
+def display_weather(data):
 
+    temperature_celsius = data["current_weather"]["temperature"]
+    temperature_fahrenheit = temperature_celsius * 9/5 + 32
+
+    wind_speed_kmh = data["current_weather"]["windspeed"]
+    wind_speed_mph = wind_speed_kmh * 0.6213712
+
+    print(f"Current Temperature: {round(temperature_fahrenheit)}°F")
+    print(f"Current Wind Speed: {round(wind_speed_mph, 1)} mph")
+
+weather_data = get_weather()
+display_weather(weather_data)
