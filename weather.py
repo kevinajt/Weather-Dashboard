@@ -76,13 +76,19 @@ def get_weather(latitude, longitude):
 
     return data
 
+def celsius_to_fahrenheit(celsius):
+    return celsius * 9/5 + 32
+
+def kmh_to_mph(kmh):
+    return kmh * 0.6213712
+
 def display_weather(data):
 
     temperature_celsius = data["current_weather"]["temperature"]
-    temperature_fahrenheit = temperature_celsius * 9/5 + 32
+    temperature_fahrenheit = celsius_to_fahrenheit(temperature_celsius)
 
     wind_speed_kmh = data["current_weather"]["windspeed"]
-    wind_speed_mph = wind_speed_kmh * 0.6213712
+    wind_speed_mph = kmh_to_mph(wind_speed_kmh)
 
     weather_code = data["current_weather"]["weathercode"]
     weather_description = WEATHER_CODES.get(weather_code, "Unknown weather condition")
